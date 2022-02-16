@@ -25,7 +25,7 @@ jobs:
           workflow_conclusion: success
           branch: main
           name: include-dir
-          repo: https://github.com/AustinArnett-Ommo/common_test
+          repo: AustinArnett-Ommo/common_test
           check_artifacts: true
           
         
