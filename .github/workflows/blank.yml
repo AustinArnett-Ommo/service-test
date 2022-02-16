@@ -1,0 +1,43 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Install CMake
+        run: choco install cmake
+        
+      - name: Get dependencies
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: blank.yml
+          workflow_conclusion: success
+          branch: main
+          name: include-dir
+          repo: https://github.com/AustinArnett-Ommo/common_test
+          check_artifacts: true
+          
+        
+      - name: Configure
+        shell: bash
+        run: |
+          mkdir install
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_INSTALL_PREFIX:PATH=install
+      - name: build
+        shell: bash
+        run: |
+          cd build
+          cmake --build . --config Release
